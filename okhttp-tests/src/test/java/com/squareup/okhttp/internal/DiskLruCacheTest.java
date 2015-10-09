@@ -16,16 +16,6 @@
 package com.squareup.okhttp.internal;
 
 import com.squareup.okhttp.internal.io.FileSystem;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.Executor;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
@@ -36,6 +26,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.Timeout;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.Executor;
 
 import static com.squareup.okhttp.internal.DiskLruCache.JOURNAL_FILE;
 import static com.squareup.okhttp.internal.DiskLruCache.JOURNAL_FILE_BACKUP;
@@ -60,7 +61,7 @@ public final class DiskLruCacheTest {
   private final TestExecutor executor = new TestExecutor();
 
   private DiskLruCache cache;
-  private final Deque<DiskLruCache> toClose = new ArrayDeque<>();
+  private final Deque<DiskLruCache> toClose = new ArrayDeque<DiskLruCache>();
 
   private void createNewCache() throws IOException {
     createNewCacheWithSize(Integer.MAX_VALUE);
@@ -1159,7 +1160,7 @@ public final class DiskLruCacheTest {
   }
 
   private void assertJournalEquals(String... expectedBodyLines) throws Exception {
-    List<String> expectedLines = new ArrayList<>();
+    List<String> expectedLines = new ArrayList<String>();
     expectedLines.add(MAGIC);
     expectedLines.add(VERSION_1);
     expectedLines.add("100");
@@ -1189,7 +1190,7 @@ public final class DiskLruCacheTest {
   }
 
   private List<String> readJournalLines() throws Exception {
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     BufferedSource source = Okio.buffer(fileSystem.source(journalFile));
     for (String line; (line = source.readUtf8Line()) != null; ) {
       result.add(line);
@@ -1321,7 +1322,7 @@ public final class DiskLruCacheTest {
   }
 
   private static class TestExecutor implements Executor {
-    final Deque<Runnable> jobs = new ArrayDeque<>();
+    final Deque<Runnable> jobs = new ArrayDeque<Runnable>();
 
     @Override public void execute(Runnable command) {
       jobs.addLast(command);

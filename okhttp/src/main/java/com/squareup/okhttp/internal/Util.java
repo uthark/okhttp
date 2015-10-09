@@ -17,6 +17,10 @@
 package com.squareup.okhttp.internal;
 
 import com.squareup.okhttp.HttpUrl;
+import okio.Buffer;
+import okio.ByteString;
+import okio.Source;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -35,9 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import okio.Buffer;
-import okio.ByteString;
-import okio.Source;
 
 /** Junk drawer of utility methods. */
 public final class Util {
@@ -177,7 +178,9 @@ public final class Util {
       MessageDigest messageDigest = MessageDigest.getInstance("MD5");
       byte[] md5bytes = messageDigest.digest(s.getBytes("UTF-8"));
       return ByteString.of(md5bytes).hex();
-    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+    } catch (NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    } catch (UnsupportedEncodingException e) {
       throw new AssertionError(e);
     }
   }
@@ -188,7 +191,9 @@ public final class Util {
       MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
       byte[] sha1Bytes = messageDigest.digest(s.getBytes("UTF-8"));
       return ByteString.of(sha1Bytes).base64();
-    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+    } catch (NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    } catch (UnsupportedEncodingException e) {
       throw new AssertionError(e);
     }
   }
@@ -206,7 +211,7 @@ public final class Util {
 
   /** Returns an immutable copy of {@code list}. */
   public static <T> List<T> immutableList(List<T> list) {
-    return Collections.unmodifiableList(new ArrayList<>(list));
+    return Collections.unmodifiableList(new ArrayList<T>(list));
   }
 
   /** Returns an immutable list containing {@code elements}. */
@@ -216,7 +221,7 @@ public final class Util {
 
   /** Returns an immutable copy of {@code map}. */
   public static <K, V> Map<K, V> immutableMap(Map<K, V> map) {
-    return Collections.unmodifiableMap(new LinkedHashMap<>(map));
+    return Collections.unmodifiableMap(new LinkedHashMap<K, V>(map));
   }
 
   public static ThreadFactory threadFactory(final String name, final boolean daemon) {
@@ -244,7 +249,7 @@ public final class Util {
    * {@code second}. The returned elements are in the same order as in {@code first}.
    */
   private static <T> List<T> intersect(T[] first, T[] second) {
-    List<T> result = new ArrayList<>();
+    List<T> result = new ArrayList<T>();
     for (T a : first) {
       for (T b : second) {
         if (a.equals(b)) {

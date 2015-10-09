@@ -28,6 +28,14 @@ import com.squareup.okhttp.internal.Network;
 import com.squareup.okhttp.internal.RouteDatabase;
 import com.squareup.okhttp.internal.SslContextBuilder;
 import com.squareup.okhttp.internal.Util;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -36,13 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import javax.net.SocketFactory;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import org.junit.Before;
-import org.junit.Test;
 
 import static java.net.Proxy.NO_PROXY;
 import static org.junit.Assert.assertEquals;
@@ -320,7 +321,7 @@ public final class RouteSelectorTest {
     dns.inetAddresses = makeFakeAddresses(255, numberOfAddresses);
 
     // Extract the regular sequence of routes from selector.
-    List<Route> regularRoutes = new ArrayList<>();
+    List<Route> regularRoutes = new ArrayList<Route>();
     while (routeSelector.hasNext()) {
       regularRoutes.add(routeSelector.next());
     }
@@ -332,7 +333,7 @@ public final class RouteSelectorTest {
     // Reset selector
     routeSelector = RouteSelector.get(address, httpsRequest, client);
 
-    List<Route> routesWithFailedRoute = new ArrayList<>();
+    List<Route> routesWithFailedRoute = new ArrayList<Route>();
     while (routeSelector.hasNext()) {
       routesWithFailedRoute.add(routeSelector.next());
     }
@@ -393,7 +394,7 @@ public final class RouteSelectorTest {
   }
 
   private static class FakeDns implements Network {
-    List<String> requestedHosts = new ArrayList<>();
+    List<String> requestedHosts = new ArrayList<String>();
     InetAddress[] inetAddresses;
 
     @Override public InetAddress[] resolveInetAddresses(String host) throws UnknownHostException {

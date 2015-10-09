@@ -15,10 +15,11 @@
  */
 package com.squareup.okhttp.internal.framed;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
 
 import static com.squareup.okhttp.internal.framed.Http2.FLAG_ACK;
 import static com.squareup.okhttp.internal.framed.Http2.FLAG_END_HEADERS;
@@ -91,7 +92,7 @@ public class Http2FrameLoggerTest {
    * also demonstrates how sparse the lookup table is.
    */
   @Test public void allFormattedFlagsWithValidBits() {
-    List<String> formattedFlags = new ArrayList<>(0x40); // Highest valid flag is 0x20.
+    List<String> formattedFlags = new ArrayList<String>(0x40); // Highest valid flag is 0x20.
     for (byte i = 0; i < 0x40; i++) formattedFlags.add(formatFlags(TYPE_HEADERS, i));
 
     assertEquals(Arrays.asList(

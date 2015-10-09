@@ -17,6 +17,9 @@ package com.squareup.okhttp;
 
 import com.squareup.okhttp.UrlComponentEncodingTester.Component;
 import com.squareup.okhttp.UrlComponentEncodingTester.Encoding;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -24,8 +27,6 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
@@ -1095,7 +1096,7 @@ public final class HttpUrlTest {
   @Test public void queryParametersWithoutValues() throws Exception {
     HttpUrl url = HttpUrl.parse("http://host/?foo&bar&baz");
     assertEquals(3, url.querySize());
-    assertEquals(new LinkedHashSet<>(Arrays.asList("foo", "bar", "baz")),
+    assertEquals(new LinkedHashSet<String>(Arrays.asList("foo", "bar", "baz")),
         url.queryParameterNames());
     assertEquals(null, url.queryParameterValue(0));
     assertEquals(null, url.queryParameterValue(1));
@@ -1108,7 +1109,7 @@ public final class HttpUrlTest {
   @Test public void queryParametersWithEmptyValues() throws Exception {
     HttpUrl url = HttpUrl.parse("http://host/?foo=&bar=&baz=");
     assertEquals(3, url.querySize());
-    assertEquals(new LinkedHashSet<>(Arrays.asList("foo", "bar", "baz")),
+    assertEquals(new LinkedHashSet<String>(Arrays.asList("foo", "bar", "baz")),
         url.queryParameterNames());
     assertEquals("", url.queryParameterValue(0));
     assertEquals("", url.queryParameterValue(1));

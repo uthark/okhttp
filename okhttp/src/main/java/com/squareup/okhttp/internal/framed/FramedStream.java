@@ -16,18 +16,19 @@
 
 package com.squareup.okhttp.internal.framed;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
 import okio.AsyncTimeout;
 import okio.Buffer;
 import okio.BufferedSource;
 import okio.Sink;
 import okio.Source;
 import okio.Timeout;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.squareup.okhttp.internal.framed.Settings.DEFAULT_INITIAL_WINDOW_SIZE;
 
@@ -267,7 +268,7 @@ public final class FramedStream {
         if (headersMode.failIfHeadersPresent()) {
           errorCode = ErrorCode.STREAM_IN_USE;
         } else {
-          List<Header> newHeaders = new ArrayList<>();
+          List<Header> newHeaders = new ArrayList<Header>();
           newHeaders.addAll(responseHeaders);
           newHeaders.addAll(headers);
           this.responseHeaders = newHeaders;

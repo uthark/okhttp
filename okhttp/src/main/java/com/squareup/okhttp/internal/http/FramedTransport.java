@@ -26,6 +26,10 @@ import com.squareup.okhttp.internal.framed.ErrorCode;
 import com.squareup.okhttp.internal.framed.FramedConnection;
 import com.squareup.okhttp.internal.framed.FramedStream;
 import com.squareup.okhttp.internal.framed.Header;
+import okio.ByteString;
+import okio.Okio;
+import okio.Sink;
+
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
@@ -34,9 +38,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import okio.ByteString;
-import okio.Okio;
-import okio.Sink;
 
 import static com.squareup.okhttp.internal.framed.Header.RESPONSE_STATUS;
 import static com.squareup.okhttp.internal.framed.Header.TARGET_AUTHORITY;
@@ -112,7 +113,7 @@ public final class FramedTransport implements Transport {
   public static List<Header> writeNameValueBlock(Request request, Protocol protocol,
       String version) {
     Headers headers = request.headers();
-    List<Header> result = new ArrayList<>(headers.size() + 10);
+    List<Header> result = new ArrayList<Header>(headers.size() + 10);
     result.add(new Header(TARGET_METHOD, request.method()));
     result.add(new Header(TARGET_PATH, RequestLine.requestPath(request.httpUrl())));
     String host = Util.hostHeader(request.httpUrl());

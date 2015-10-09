@@ -54,7 +54,8 @@ public final class RouteException extends Exception {
     if (addSuppressedExceptionMethod != null) {
       try {
         addSuppressedExceptionMethod.invoke(e, suppressed);
-      } catch (InvocationTargetException | IllegalAccessException ignored) {
+      } catch (InvocationTargetException ignored) {
+      } catch (IllegalAccessException ignored) {
       }
     }
   }

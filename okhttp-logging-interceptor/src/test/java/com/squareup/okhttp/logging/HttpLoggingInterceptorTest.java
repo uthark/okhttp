@@ -22,13 +22,14 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +40,7 @@ public final class HttpLoggingInterceptorTest {
   @Rule public final MockWebServer server = new MockWebServer();
 
   private final OkHttpClient client = new OkHttpClient();
-  private final List<String> logs = new ArrayList<>();
+  private final List<String> logs = new ArrayList<String>();
   private HttpLoggingInterceptor interceptor;
 
   @Before public void setUp() {

@@ -19,11 +19,12 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.internal.ws.WebSocketReader;
+import okio.Buffer;
+
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import okio.Buffer;
 
 import static com.squareup.okhttp.ws.WebSocket.BINARY;
 import static com.squareup.okhttp.ws.WebSocket.TEXT;
@@ -36,7 +37,7 @@ public final class WebSocketRecorder implements WebSocketReader.FrameCallback, W
     void onMessage(ResponseBody message) throws IOException;
   }
 
-  private final BlockingQueue<Object> events = new LinkedBlockingQueue<>();
+  private final BlockingQueue<Object> events = new LinkedBlockingQueue<Object>();
   private MessageDelegate delegate;
 
   /** Sets a delegate for the next call to {@link #onMessage}. Cleared after invoked. */

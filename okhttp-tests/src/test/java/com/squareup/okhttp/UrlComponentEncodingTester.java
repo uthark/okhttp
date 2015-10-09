@@ -15,13 +15,14 @@
  */
 package com.squareup.okhttp;
 
+import okio.Buffer;
+import okio.ByteString;
+
 import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import okio.Buffer;
-import okio.ByteString;
 
 import static org.junit.Assert.fail;
 
@@ -35,7 +36,7 @@ class UrlComponentEncodingTester {
    */
   private static final Map<Integer, Encoding> defaultEncodings;
   static {
-    Map<Integer, Encoding> map = new LinkedHashMap<>();
+    Map<Integer, Encoding> map = new LinkedHashMap<Integer, Encoding>();
     map.put(       0x0, Encoding.PERCENT); // Null character
     map.put(       0x1, Encoding.PERCENT); // Start of Header
     map.put(       0x2, Encoding.PERCENT); // Start of Text
@@ -171,7 +172,7 @@ class UrlComponentEncodingTester {
   private final StringBuilder skipForUri = new StringBuilder();
 
   public UrlComponentEncodingTester() {
-    this.encodings = new LinkedHashMap<>(defaultEncodings);
+    this.encodings = new LinkedHashMap<Integer, Encoding>(defaultEncodings);
   }
 
   public UrlComponentEncodingTester override(Encoding encoding, int... codePoints) {

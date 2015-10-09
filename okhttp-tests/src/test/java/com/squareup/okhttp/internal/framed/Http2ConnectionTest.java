@@ -16,12 +16,6 @@
 package com.squareup.okhttp.internal.framed;
 
 import com.squareup.okhttp.internal.Util;
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -29,6 +23,13 @@ import okio.Okio;
 import okio.Source;
 import org.junit.After;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.squareup.okhttp.TestUtil.headerEntries;
 import static com.squareup.okhttp.TestUtil.repeat;
@@ -260,7 +261,7 @@ public final class Http2ConnectionTest {
     MockSpdyPeer.InFrame synStream = peer.takeFrame();
     assertEquals(TYPE_HEADERS, synStream.type);
     for (int i = 0; i < 3; i++) {
-      List<Integer> windowUpdateStreamIds = new ArrayList<>(2);
+      List<Integer> windowUpdateStreamIds = new ArrayList<Integer>(2);
       for (int j = 0; j < 2; j++) {
         MockSpdyPeer.InFrame windowUpdate = peer.takeFrame();
         assertEquals(TYPE_WINDOW_UPDATE, windowUpdate.type);
@@ -514,7 +515,7 @@ public final class Http2ConnectionTest {
   };
 
   private static class RecordingPushObserver implements PushObserver {
-    final List<Object> events = new ArrayList<>();
+    final List<Object> events = new ArrayList<Object>();
 
     public synchronized Object takeEvent() throws InterruptedException {
       while (events.isEmpty()) {

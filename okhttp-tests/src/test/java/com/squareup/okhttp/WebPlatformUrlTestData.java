@@ -15,12 +15,13 @@
  */
 package com.squareup.okhttp;
 
+import okio.Buffer;
+import okio.BufferedSource;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import okio.Buffer;
-import okio.BufferedSource;
 
 /**
  * A test from the <a href="https://github.com/w3c/web-platform-tests/tree/master/url">Web Platform
@@ -50,33 +51,32 @@ public final class WebPlatformUrlTestData {
   }
 
   private void set(String name, String value) {
-    switch (name) {
-      case "s":
-        scheme = value;
-        break;
-      case "u":
-        username = value;
-        break;
-      case "pass":
-        password = value;
-        break;
-      case "h":
-        host = value;
-        break;
-      case "port":
-        port = value;
-        break;
-      case "p":
-        path = value;
-        break;
-      case "q":
-        query = value;
-        break;
-      case "f":
-        fragment = value;
-        break;
-      default:
-        throw new IllegalArgumentException("unexpected attribute: " + value);
+    if (name.equals("s")) {
+      scheme = value;
+
+    } else if (name.equals("u")) {
+      username = value;
+
+    } else if (name.equals("pass")) {
+      password = value;
+
+    } else if (name.equals("h")) {
+      host = value;
+
+    } else if (name.equals("port")) {
+      port = value;
+
+    } else if (name.equals("p")) {
+      path = value;
+
+    } else if (name.equals("q")) {
+      query = value;
+
+    } else if (name.equals("f")) {
+      fragment = value;
+
+    } else {
+      throw new IllegalArgumentException("unexpected attribute: " + value);
     }
   }
 
@@ -85,7 +85,7 @@ public final class WebPlatformUrlTestData {
   }
 
   public static List<WebPlatformUrlTestData> load(BufferedSource source) throws IOException {
-    List<WebPlatformUrlTestData> list = new ArrayList<>();
+    List<WebPlatformUrlTestData> list = new ArrayList<WebPlatformUrlTestData>();
     for (String line; (line = source.readUtf8Line()) != null; ) {
       if (line.isEmpty() || line.startsWith("#")) continue;
 

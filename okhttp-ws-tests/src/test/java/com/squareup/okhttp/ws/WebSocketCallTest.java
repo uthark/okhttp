@@ -24,17 +24,18 @@ import com.squareup.okhttp.internal.SslContextBuilder;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.testing.RecordingHostnameVerifier;
+import okio.Buffer;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.Test;
+
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.net.ssl.SSLContext;
-import okio.Buffer;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Test;
 
 import static com.squareup.okhttp.ws.WebSocket.TEXT;
 
@@ -208,9 +209,9 @@ public final class WebSocketCallTest {
   private WebSocket awaitWebSocket(Request request) {
     WebSocketCall call = new WebSocketCall(client, request, random);
 
-    final AtomicReference<Response> responseRef = new AtomicReference<>();
-    final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
-    final AtomicReference<IOException> failureRef = new AtomicReference<>();
+    final AtomicReference<Response> responseRef = new AtomicReference<Response>();
+    final AtomicReference<WebSocket> webSocketRef = new AtomicReference<WebSocket>();
+    final AtomicReference<IOException> failureRef = new AtomicReference<IOException>();
     final CountDownLatch latch = new CountDownLatch(1);
     call.enqueue(new WebSocketListener() {
       @Override public void onOpen(WebSocket webSocket, Response response) {

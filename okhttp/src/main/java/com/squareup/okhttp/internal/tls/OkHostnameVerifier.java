@@ -17,6 +17,10 @@
 
 package com.squareup.okhttp.internal.tls;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSession;
+import javax.security.auth.x500.X500Principal;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
@@ -26,10 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.security.auth.x500.X500Principal;
 
 /**
  * A HostnameVerifier consistent with <a
@@ -120,14 +120,14 @@ public final class OkHostnameVerifier implements HostnameVerifier {
   public static List<String> allSubjectAltNames(X509Certificate certificate) {
     List<String> altIpaNames = getSubjectAltNames(certificate, ALT_IPA_NAME);
     List<String> altDnsNames = getSubjectAltNames(certificate, ALT_DNS_NAME);
-    List<String> result = new ArrayList<>(altIpaNames.size() + altDnsNames.size());
+    List<String> result = new ArrayList<String>(altIpaNames.size() + altDnsNames.size());
     result.addAll(altIpaNames);
     result.addAll(altDnsNames);
     return result;
   }
 
   private static List<String> getSubjectAltNames(X509Certificate certificate, int type) {
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     try {
       Collection<?> subjectAltNames = certificate.getSubjectAlternativeNames();
       if (subjectAltNames == null) {

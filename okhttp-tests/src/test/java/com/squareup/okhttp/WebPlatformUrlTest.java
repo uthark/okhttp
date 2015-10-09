@@ -16,15 +16,16 @@
 package com.squareup.okhttp;
 
 import com.squareup.okhttp.internal.Util;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import okio.BufferedSource;
 import okio.Okio;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,7 +37,7 @@ public final class WebPlatformUrlTest {
   @Parameterized.Parameters(name = "{0}")
   public static List<Object[]> parameters() {
     try {
-      List<Object[]> result = new ArrayList<>();
+      List<Object[]> result = new ArrayList<Object[]>();
       for (WebPlatformUrlTestData urlTestData : loadTests()) {
         result.add(new Object[] { urlTestData });
       }
@@ -68,7 +69,7 @@ public final class WebPlatformUrlTest {
   );
 
   /** Test how {@link HttpUrl} does against the web platform test suite. */
-  @Test public void httpUrl() throws Exception {
+  @Test public void httpUrl() throws Throwable {
     if (!testData.scheme.isEmpty() && !HTTP_URL_SCHEMES.contains(testData.scheme)) {
       System.err.println("Ignoring unsupported scheme " + testData.scheme);
       return;

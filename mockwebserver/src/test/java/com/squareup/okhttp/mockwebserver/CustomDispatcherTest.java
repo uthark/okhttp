@@ -15,6 +15,9 @@
  */
 package com.squareup.okhttp.mockwebserver;
 
+import org.junit.After;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.After;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +37,7 @@ public class CustomDispatcherTest {
 
   @Test public void simpleDispatch() throws Exception {
     mockWebServer.start();
-    final List<RecordedRequest> requestsMade = new ArrayList<>();
+    final List<RecordedRequest> requestsMade = new ArrayList<RecordedRequest>();
     final Dispatcher dispatcher = new Dispatcher() {
       @Override
       public MockResponse dispatch(RecordedRequest request) throws InterruptedException {

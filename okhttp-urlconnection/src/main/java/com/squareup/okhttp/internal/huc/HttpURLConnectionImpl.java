@@ -39,6 +39,9 @@ import com.squareup.okhttp.internal.http.RequestException;
 import com.squareup.okhttp.internal.http.RetryableSink;
 import com.squareup.okhttp.internal.http.RouteException;
 import com.squareup.okhttp.internal.http.StatusLine;
+import okio.BufferedSink;
+import okio.Sink;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,8 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import okio.BufferedSink;
-import okio.Sink;
 
 /**
  * This implementation uses HttpEngine to send requests and receive responses.
@@ -78,7 +79,7 @@ import okio.Sink;
  * header fields, request method, etc.) are immutable.
  */
 public class HttpURLConnectionImpl extends HttpURLConnection {
-  private static final Set<String> METHODS = new LinkedHashSet<>(
+  private static final Set<String> METHODS = new LinkedHashSet<String>(
       Arrays.asList("OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "PATCH"));
   private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(null, new byte[0]);
 
@@ -572,7 +573,7 @@ public class HttpURLConnectionImpl extends HttpURLConnection {
    * defined in {@link Protocol OkHttp's protocol enumeration}.
    */
   private void setProtocols(String protocolsString, boolean append) {
-    List<Protocol> protocolsList = new ArrayList<>();
+    List<Protocol> protocolsList = new ArrayList<Protocol>();
     if (append) {
       protocolsList.addAll(client.getProtocols());
     }

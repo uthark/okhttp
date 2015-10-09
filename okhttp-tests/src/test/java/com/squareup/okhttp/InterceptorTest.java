@@ -18,15 +18,6 @@ package com.squareup.okhttp;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ForwardingSink;
@@ -37,6 +28,16 @@ import okio.Sink;
 import okio.Source;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -607,7 +608,7 @@ public final class InterceptorTest {
 
   /** Catches exceptions that are otherwise headed for the uncaught exception handler. */
   private static class ExceptionCatchingExecutor extends ThreadPoolExecutor {
-    private final BlockingQueue<Exception> exceptions = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Exception> exceptions = new LinkedBlockingQueue<Exception>();
 
     public ExceptionCatchingExecutor() {
       super(1, 1, 0, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());

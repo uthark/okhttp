@@ -16,19 +16,20 @@
 package com.squareup.okhttp.internal;
 
 import com.squareup.okhttp.internal.io.FileSystem;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import okio.Buffer;
 import okio.ForwardingSink;
 import okio.Sink;
 import okio.Source;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public final class FaultyFileSystem implements FileSystem {
   private final FileSystem delegate;
-  private final Set<File> writeFaults = new LinkedHashSet<>();
+  private final Set<File> writeFaults = new LinkedHashSet<File>();
 
   public FaultyFileSystem(FileSystem delegate) {
     this.delegate = delegate;

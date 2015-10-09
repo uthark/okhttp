@@ -32,17 +32,17 @@ public final class WebSocketProtocol {
   */
 
   /** Byte 0 flag for whether this is the final fragment in a message. */
-  static final int B0_FLAG_FIN = 0b10000000;
+  static final int B0_FLAG_FIN = 0x10000000;
   /** Byte 0 reserved flag 1. Must be 0 unless negotiated otherwise. */
-  static final int B0_FLAG_RSV1 = 0b01000000;
+  static final int B0_FLAG_RSV1 = 0x01000000;
   /** Byte 0 reserved flag 2. Must be 0 unless negotiated otherwise. */
-  static final int B0_FLAG_RSV2 = 0b00100000;
+  static final int B0_FLAG_RSV2 = 0x00100000;
   /** Byte 0 reserved flag 3. Must be 0 unless negotiated otherwise. */
-  static final int B0_FLAG_RSV3 = 0b00010000;
+  static final int B0_FLAG_RSV3 = 0x00010000;
   /** Byte 0 mask for the frame opcode. */
-  static final int B0_MASK_OPCODE = 0b00001111;
+  static final int B0_MASK_OPCODE = 0x00001111;
   /** Flag in the opcode which indicates a control frame. */
-  static final int OPCODE_FLAG_CONTROL = 0b00001000;
+  static final int OPCODE_FLAG_CONTROL = 0x00001000;
 
   /**
    * Byte 1 flag for whether the payload data is masked.
@@ -50,14 +50,14 @@ public final class WebSocketProtocol {
    * If this flag is set, the next four bytes represent the mask key. These bytes appear after
    * any additional bytes specified by {@link #B1_MASK_LENGTH}.
    */
-  static final int B1_FLAG_MASK = 0b10000000;
+  static final int B1_FLAG_MASK = 0x10000000;
   /**
    * Byte 1 mask for the payload length.
    * <p>
    * If this value is {@link #PAYLOAD_SHORT}, the next two bytes represent the length.
    * If this value is {@link #PAYLOAD_LONG}, the next eight bytes represent the length.
    */
-  static final int B1_MASK_LENGTH = 0b01111111;
+  static final int B1_MASK_LENGTH = 0x01111111;
 
   static final int OPCODE_CONTINUATION = 0x0;
   static final int OPCODE_TEXT = 0x1;

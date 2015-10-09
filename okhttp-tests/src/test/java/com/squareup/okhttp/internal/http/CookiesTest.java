@@ -21,6 +21,10 @@ import com.squareup.okhttp.OkUrlFactory;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -33,9 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import static java.net.CookiePolicy.ACCEPT_ORIGINAL_SERVER;
 import static org.junit.Assert.assertEquals;
@@ -259,13 +260,13 @@ public class CookiesTest {
    * getRequestProperties}.
    */
   @Test public void testHeadersSentToCookieHandler() throws IOException, InterruptedException {
-    final Map<String, List<String>> cookieHandlerHeaders = new HashMap<>();
+    final Map<String, List<String>> cookieHandlerHeaders = new HashMap<String, List<String>>();
     CookieHandler.setDefault(new CookieManager() {
       @Override
       public Map<String, List<String>> get(URI uri,
           Map<String, List<String>> requestHeaders) throws IOException {
         cookieHandlerHeaders.putAll(requestHeaders);
-        Map<String, List<String>> result = new HashMap<>();
+        Map<String, List<String>> result = new HashMap<String, List<String>>();
         result.put("Cookie", Collections.singletonList("Bar=bar"));
         result.put("Cookie2", Collections.singletonList("Baz=baz"));
         result.put("Quux", Collections.singletonList("quux"));
@@ -317,7 +318,7 @@ public class CookiesTest {
     CookieHandler.setDefault(new CookieManager() {
       @Override public Map<String, List<String>> get(URI uri,
           Map<String, List<String>> requestHeaders) throws IOException {
-        Map<String, List<String>> result = new HashMap<>();
+        Map<String, List<String>> result = new HashMap<String, List<String>>();
         result.put("COOKIE", Collections.singletonList("Bar=bar"));
         result.put("cooKIE2", Collections.singletonList("Baz=baz"));
         return result;

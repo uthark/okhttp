@@ -25,6 +25,16 @@ import com.squareup.okhttp.internal.http.HttpMethod;
 import com.squareup.okhttp.internal.http.OkHeaders;
 import com.squareup.okhttp.internal.http.StatusLine;
 import com.squareup.okhttp.internal.io.FileSystem;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.ByteString;
+import okio.ForwardingSink;
+import okio.ForwardingSource;
+import okio.Okio;
+import okio.Sink;
+import okio.Source;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.cert.Certificate;
@@ -36,15 +46,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.ByteString;
-import okio.ForwardingSink;
-import okio.ForwardingSource;
-import okio.Okio;
-import okio.Sink;
-import okio.Source;
 
 /**
  * Caches HTTP and HTTPS responses to the filesystem so they may be reused, saving time and
@@ -621,7 +622,7 @@ public final class Cache {
 
       try {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        List<Certificate> result = new ArrayList<>(length);
+        List<Certificate> result = new ArrayList<Certificate>(length);
         for (int i = 0; i < length; i++) {
           String line = source.readUtf8LineStrict();
           Buffer bytes = new Buffer();

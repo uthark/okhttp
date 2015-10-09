@@ -25,6 +25,14 @@ import com.squareup.okhttp.internal.http.HttpEngine;
 import com.squareup.okhttp.internal.http.RouteException;
 import com.squareup.okhttp.internal.http.Transport;
 import com.squareup.okhttp.internal.tls.OkHostnameVerifier;
+import okio.BufferedSink;
+import okio.BufferedSource;
+
+import javax.net.SocketFactory;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.MalformedURLException;
@@ -36,13 +44,6 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.net.SocketFactory;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import okio.BufferedSink;
-import okio.BufferedSource;
 
 /**
  * Configures and creates HTTP connections. Most applications can use a single
@@ -175,8 +176,8 @@ public class OkHttpClient implements Cloneable {
   private Proxy proxy;
   private List<Protocol> protocols;
   private List<ConnectionSpec> connectionSpecs;
-  private final List<Interceptor> interceptors = new ArrayList<>();
-  private final List<Interceptor> networkInterceptors = new ArrayList<>();
+  private final List<Interceptor> interceptors = new ArrayList<Interceptor>();
+  private final List<Interceptor> networkInterceptors = new ArrayList<Interceptor>();
   private ProxySelector proxySelector;
   private CookieHandler cookieHandler;
 
@@ -194,9 +195,9 @@ public class OkHttpClient implements Cloneable {
   private boolean followSslRedirects = true;
   private boolean followRedirects = true;
   private boolean retryOnConnectionFailure = true;
-  private int connectTimeout = 10_000;
-  private int readTimeout = 10_000;
-  private int writeTimeout = 10_000;
+  private int connectTimeout = 10000;
+  private int readTimeout = 10000;
+  private int writeTimeout = 10000;
 
   public OkHttpClient() {
     routeDatabase = new RouteDatabase();

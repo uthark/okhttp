@@ -19,6 +19,10 @@ import com.squareup.okhttp.internal.RecordingAuthenticator;
 import com.squareup.okhttp.internal.http.AuthenticatorAdapter;
 import com.squareup.okhttp.internal.http.RecordingProxySelector;
 import com.squareup.okhttp.internal.tls.OkHostnameVerifier;
+import org.junit.After;
+import org.junit.Test;
+
+import javax.net.SocketFactory;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.CacheRequest;
@@ -33,9 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import javax.net.SocketFactory;
-import org.junit.After;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -59,9 +60,9 @@ public final class OkHttpClientTest {
 
   @Test public void timeoutDefaults() {
     OkHttpClient client = new OkHttpClient();
-    assertEquals(10_000, client.getConnectTimeout());
-    assertEquals(10_000, client.getReadTimeout());
-    assertEquals(10_000, client.getWriteTimeout());
+    assertEquals(10000, client.getConnectTimeout());
+    assertEquals(10000, client.getReadTimeout());
+    assertEquals(10000, client.getWriteTimeout());
   }
 
   @Test public void timeoutValidRange() {
@@ -96,9 +97,9 @@ public final class OkHttpClientTest {
   @Test public void copyWithDefaultsWhenDefaultIsAConstant() throws Exception {
     OkHttpClient client = new OkHttpClient().copyWithDefaults();
     assertNull(client.internalCache());
-    assertEquals(10_000, client.getConnectTimeout());
-    assertEquals(10_000, client.getReadTimeout());
-    assertEquals(10_000, client.getWriteTimeout());
+    assertEquals(10000, client.getConnectTimeout());
+    assertEquals(10000, client.getReadTimeout());
+    assertEquals(10000, client.getWriteTimeout());
     assertTrue(client.getFollowSslRedirects());
     assertNull(client.getProxy());
     assertEquals(Arrays.asList(Protocol.HTTP_2, Protocol.SPDY_3, Protocol.HTTP_1_1),

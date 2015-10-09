@@ -17,15 +17,16 @@ package com.squareup.okhttp.internal;
 
 import com.squareup.okhttp.ConnectionSpec;
 import com.squareup.okhttp.TlsVersion;
+import org.junit.Test;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSocket;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLSocket;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -126,8 +127,8 @@ public class ConnectionSpecSelectorTest {
   }
 
   private static void assertEnabledProtocols(SSLSocket socket, TlsVersion... required) {
-    Set<String> actual = new LinkedHashSet<>(Arrays.asList(socket.getEnabledProtocols()));
-    Set<String> expected = new LinkedHashSet<>(Arrays.asList(javaNames(required)));
+    Set<String> actual = new LinkedHashSet<String>(Arrays.asList(socket.getEnabledProtocols()));
+    Set<String> expected = new LinkedHashSet<String>(Arrays.asList(javaNames(required)));
     assertEquals(expected, actual);
   }
 

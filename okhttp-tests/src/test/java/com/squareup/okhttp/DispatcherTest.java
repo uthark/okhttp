@@ -1,14 +1,15 @@
 package com.squareup.okhttp;
 
 import com.squareup.okhttp.Call.AsyncCall;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -123,14 +124,14 @@ public final class DispatcherTest {
   }
 
   class RecordingExecutor extends AbstractExecutorService {
-    private List<AsyncCall> calls = new ArrayList<>();
+    private List<AsyncCall> calls = new ArrayList<AsyncCall>();
 
     @Override public void execute(Runnable command) {
       calls.add((AsyncCall) command);
     }
 
     public void assertJobs(String... expectedUrls) {
-      List<String> actualUrls = new ArrayList<>();
+      List<String> actualUrls = new ArrayList<String>();
       for (AsyncCall call : calls) {
         actualUrls.add(call.request().urlString());
       }

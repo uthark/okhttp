@@ -59,7 +59,7 @@ public final class RouteSelector {
   private int nextInetSocketAddressIndex;
 
   /* State for negotiating failed routes */
-  private final List<Route> postponedRoutes = new ArrayList<>();
+  private final List<Route> postponedRoutes = new ArrayList<Route>();
 
   private RouteSelector(Address address, HttpUrl url, OkHttpClient client) {
     this.address = address;
@@ -131,7 +131,7 @@ public final class RouteSelector {
     } else {
       // Try each of the ProxySelector choices until one connection succeeds. If none succeed
       // then we'll try a direct connection below.
-      proxies = new ArrayList<>();
+      proxies = new ArrayList<Proxy>();
       List<Proxy> selectedProxies = client.getProxySelector().select(url.uri());
       if (selectedProxies != null) proxies.addAll(selectedProxies);
       // Finally try a direct connection. We only try it once!
@@ -160,7 +160,7 @@ public final class RouteSelector {
   /** Prepares the socket addresses to attempt for the current proxy or host. */
   private void resetNextInetSocketAddress(Proxy proxy) throws IOException {
     // Clear the addresses. Necessary if getAllByName() below throws!
-    inetSocketAddresses = new ArrayList<>();
+    inetSocketAddresses = new ArrayList<InetSocketAddress>();
 
     String socketHost;
     int socketPort;

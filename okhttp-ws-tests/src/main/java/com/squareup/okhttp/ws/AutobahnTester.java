@@ -21,6 +21,9 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.internal.Version;
+import okio.Buffer;
+import okio.BufferedSource;
+
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -28,8 +31,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import okio.Buffer;
-import okio.BufferedSource;
 
 import static com.squareup.okhttp.ws.WebSocket.BINARY;
 import static com.squareup.okhttp.ws.WebSocket.TEXT;
@@ -131,7 +132,7 @@ public final class AutobahnTester {
   private long getTestCount() throws IOException {
     final CountDownLatch latch = new CountDownLatch(1);
     final AtomicLong countRef = new AtomicLong();
-    final AtomicReference<IOException> failureRef = new AtomicReference<>();
+    final AtomicReference<IOException> failureRef = new AtomicReference<IOException>();
     newWebSocket("/getCaseCount").enqueue(new WebSocketListener() {
       @Override public void onOpen(WebSocket webSocket, Response response) {
       }

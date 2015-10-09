@@ -16,6 +16,12 @@
 package com.squareup.okhttp.mockwebserver;
 
 import com.squareup.okhttp.Headers;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,11 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -276,7 +277,7 @@ public final class MockWebServerTest {
   private List<String> headersToList(MockResponse response) {
     Headers headers = response.getHeaders();
     int size = headers.size();
-    List<String> headerList = new ArrayList<>(size);
+    List<String> headerList = new ArrayList<String>(size);
     for (int i = 0; i < size; i++) {
       headerList.add(headers.name(i) + ": " + headers.value(i));
     }

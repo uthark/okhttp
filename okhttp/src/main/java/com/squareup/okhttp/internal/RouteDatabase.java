@@ -26,7 +26,7 @@ import java.util.Set;
  * server, that failure is remembered and alternate routes are preferred.
  */
 public final class RouteDatabase {
-  private final Set<Route> failedRoutes = new LinkedHashSet<>();
+  private final Set<Route> failedRoutes = new LinkedHashSet<Route>();
 
   /** Records a failure connecting to {@code failedRoute}. */
   public synchronized void failed(Route failedRoute) {

@@ -23,6 +23,19 @@ import com.squareup.okhttp.internal.io.InMemoryFileSystem;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.GzipSink;
+import okio.Okio;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -44,18 +57,6 @@ import java.util.NoSuchElementException;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.GzipSink;
-import okio.Okio;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 import static com.squareup.okhttp.mockwebserver.SocketPolicy.DISCONNECT_AT_END;
 import static org.junit.Assert.assertEquals;
@@ -1767,7 +1768,7 @@ public final class CacheTest {
   }
 
   public void assertCookies(HttpUrl url, String... expectedCookies) throws Exception {
-    List<String> actualCookies = new ArrayList<>();
+    List<String> actualCookies = new ArrayList<String>();
     for (HttpCookie cookie : cookieManager.getCookieStore().get(url.uri())) {
       actualCookies.add(cookie.toString());
     }
@@ -1961,7 +1962,7 @@ public final class CacheTest {
     HttpUrl url = server.url("/");
     assertEquals("A", get(url).body().string());
 
-    final AtomicReference<String> ifNoneMatch = new AtomicReference<>();
+    final AtomicReference<String> ifNoneMatch = new AtomicReference<String>();
     client.networkInterceptors().add(new Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
         ifNoneMatch.compareAndSet(null, chain.request().header("If-None-Match"));

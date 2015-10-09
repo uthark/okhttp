@@ -34,6 +34,23 @@ import com.squareup.okhttp.internal.http.HttpMethod;
 import com.squareup.okhttp.internal.ws.RealWebSocket;
 import com.squareup.okhttp.internal.ws.WebSocketProtocol;
 import com.squareup.okhttp.ws.WebSocketListener;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.ByteString;
+import okio.Okio;
+import okio.Sink;
+import okio.Timeout;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -64,22 +81,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.ByteString;
-import okio.Okio;
-import okio.Sink;
-import okio.Timeout;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 
 import static com.squareup.okhttp.mockwebserver.SocketPolicy.DISCONNECT_AT_START;
 import static com.squareup.okhttp.mockwebserver.SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY;
@@ -108,7 +109,7 @@ public final class MockWebServer implements TestRule {
 
   private static final Logger logger = Logger.getLogger(MockWebServer.class.getName());
 
-  private final BlockingQueue<RecordedRequest> requestQueue = new LinkedBlockingQueue<>();
+  private final BlockingQueue<RecordedRequest> requestQueue = new LinkedBlockingQueue<RecordedRequest>();
 
   private final Set<Socket> openClientSockets =
       Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
@@ -623,7 +624,7 @@ public final class MockWebServer implements TestRule {
 
     boolean hasBody = false;
     TruncatingBuffer requestBody = new TruncatingBuffer(bodyLimit);
-    List<Integer> chunkSizes = new ArrayList<>();
+    List<Integer> chunkSizes = new ArrayList<Integer>();
     MockResponse policy = dispatcher.peek();
     if (contentLength != -1) {
       hasBody = contentLength > 0;
@@ -906,7 +907,7 @@ public final class MockWebServer implements TestRule {
       if (response.getSocketPolicy() == SocketPolicy.NO_RESPONSE) {
         return;
       }
-      List<Header> spdyHeaders = new ArrayList<>();
+      List<Header> spdyHeaders = new ArrayList<Header>();
       String[] statusParts = response.getStatus().split(" ", 2);
       if (statusParts.length != 2) {
         throw new AssertionError("Unexpected status: " + response.getStatus());
@@ -937,7 +938,7 @@ public final class MockWebServer implements TestRule {
 
     private void pushPromises(FramedStream stream, List<PushPromise> promises) throws IOException {
       for (PushPromise pushPromise : promises) {
-        List<Header> pushedHeaders = new ArrayList<>();
+        List<Header> pushedHeaders = new ArrayList<Header>();
         pushedHeaders.add(new Header(stream.getConnection().getProtocol() == Protocol.SPDY_3
             ? Header.TARGET_HOST
             : Header.TARGET_AUTHORITY, url(pushPromise.getPath()).host()));

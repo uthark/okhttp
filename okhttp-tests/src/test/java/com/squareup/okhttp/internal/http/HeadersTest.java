@@ -20,14 +20,14 @@ import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.framed.Header;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Test;
 
 import static com.squareup.okhttp.TestUtil.headerEntries;
 import static org.junit.Assert.assertEquals;
@@ -279,7 +279,7 @@ public final class HeadersTest {
   }
 
   @Test public void ofMapMakesDefensiveCopy() {
-    Map<String, String> namesAndValues = new HashMap<>();
+    Map<String, String> namesAndValues = new HashMap<String, String>();
     namesAndValues.put("User-Agent", "OkHttp");
 
     Headers headers = Headers.of(namesAndValues);

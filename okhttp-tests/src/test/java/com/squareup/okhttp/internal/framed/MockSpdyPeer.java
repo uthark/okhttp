@@ -17,6 +17,11 @@
 package com.squareup.okhttp.internal.framed;
 
 import com.squareup.okhttp.internal.Util;
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.ByteString;
+import okio.Okio;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,10 +36,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
-import okio.Buffer;
-import okio.BufferedSource;
-import okio.ByteString;
-import okio.Okio;
 
 /** Replays prerecorded outgoing frames and records incoming frames. */
 public final class MockSpdyPeer implements Closeable {
@@ -45,8 +46,8 @@ public final class MockSpdyPeer implements Closeable {
   private Variant variant = new Spdy3();
   private final Buffer bytesOut = new Buffer();
   private FrameWriter frameWriter = variant.newWriter(bytesOut, client);
-  private final List<OutFrame> outFrames = new ArrayList<>();
-  private final BlockingQueue<InFrame> inFrames = new LinkedBlockingQueue<>();
+  private final List<OutFrame> outFrames = new ArrayList<OutFrame>();
+  private final BlockingQueue<InFrame> inFrames = new LinkedBlockingQueue<InFrame>();
   private int port;
   private final ExecutorService executor = Executors.newSingleThreadExecutor(
       Util.threadFactory("MockSpdyPeer", false));

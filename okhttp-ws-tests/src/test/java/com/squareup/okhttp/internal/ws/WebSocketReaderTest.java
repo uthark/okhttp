@@ -17,17 +17,18 @@ package com.squareup.okhttp.internal.ws;
 
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.ws.WebSocketRecorder;
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.ByteString;
+import org.junit.After;
+import org.junit.Test;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
-import okio.Buffer;
-import okio.BufferedSource;
-import okio.ByteString;
-import org.junit.After;
-import org.junit.Test;
 
 import static com.squareup.okhttp.ws.WebSocketRecorder.MessageDelegate;
 import static org.junit.Assert.assertEquals;
@@ -312,7 +313,7 @@ public final class WebSocketReaderTest {
   @Test public void closedMessageSourceThrows() throws IOException {
     data.write(ByteString.decodeHex("810548656c6c6f")); // Hello
 
-    final AtomicReference<Exception> exception = new AtomicReference<>();
+    final AtomicReference<Exception> exception = new AtomicReference<Exception>();
     callback.setNextMessageDelegate(new MessageDelegate() {
       @Override public void onMessage(ResponseBody message) throws IOException {
         message.close();

@@ -15,13 +15,13 @@
  */
 package com.squareup.okhttp.testing;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class RecordingHostnameVerifier implements HostnameVerifier {
-  public final List<String> calls = new ArrayList<>();
+  public final List<String> calls = new ArrayList<String>();
 
   public boolean verify(String hostname, SSLSession session) {
     calls.add("verify " + hostname);

@@ -25,7 +25,7 @@ import java.util.logging.LogRecord;
  * assertions about them.
  */
 public final class TestLogHandler extends Handler {
-  private final List<String> logs = new ArrayList<>();
+  private final List<String> logs = new ArrayList<String>();
 
   @Override public synchronized void publish(LogRecord logRecord) {
     logs.add(logRecord.getLevel() + ": " + logRecord.getMessage());

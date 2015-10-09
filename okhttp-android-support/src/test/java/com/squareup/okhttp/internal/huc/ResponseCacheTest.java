@@ -28,6 +28,19 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 import com.squareup.okhttp.testing.RecordingHostnameVerifier;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.GzipSink;
+import okio.Okio;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -64,18 +77,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.GzipSink;
-import okio.Okio;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import static com.squareup.okhttp.mockwebserver.SocketPolicy.DISCONNECT_AT_END;
 import static org.junit.Assert.assertEquals;
@@ -1559,7 +1560,7 @@ public final class ResponseCacheTest {
   }
 
   public void assertCookies(URL url, String... expectedCookies) throws Exception {
-    List<String> actualCookies = new ArrayList<>();
+    List<String> actualCookies = new ArrayList<String>();
     for (HttpCookie cookie : cookieManager.getCookieStore().get(url.toURI())) {
       actualCookies.add(cookie.toString());
     }
@@ -1926,7 +1927,7 @@ public final class ResponseCacheTest {
         return new CacheResponse() {
           @Override public Map<String, List<String>> getHeaders() throws IOException {
             String contentType = "text/plain";
-            Map<String, List<String>> headers = new HashMap<>();
+            Map<String, List<String>> headers = new HashMap<String, List<String>>();
             headers.put("Content-Length", Arrays.asList(Integer.toString(cachedContent.length)));
             headers.put("Content-Type", Arrays.asList(contentType));
             headers.put("Expires", Arrays.asList(formatDate(-1, TimeUnit.HOURS)));
@@ -2004,7 +2005,7 @@ public final class ResponseCacheTest {
     server.enqueue(new MockResponse()
         .setBody("ABC"));
 
-    final AtomicReference<Map<String, List<String>>> requestHeadersRef = new AtomicReference<>();
+    final AtomicReference<Map<String, List<String>>> requestHeadersRef = new AtomicReference<Map<String, List<String>>>();
     Internal.instance.setCache(client, new CacheAdapter(new AbstractResponseCache() {
       @Override public CacheResponse get(URI uri, String requestMethod,
           Map<String, List<String>> requestHeaders) throws IOException {

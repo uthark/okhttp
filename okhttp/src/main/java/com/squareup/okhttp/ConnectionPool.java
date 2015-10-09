@@ -75,7 +75,7 @@ public final class ConnectionPool {
   private final int maxIdleConnections;
   private final long keepAliveDurationNs;
 
-  private final LinkedList<Connection> connections = new LinkedList<>();
+  private final LinkedList<Connection> connections = new LinkedList<Connection>();
 
   /**
    * A background thread is used to cleanup expired connections. There will be, at most, a single
@@ -227,7 +227,7 @@ public final class ConnectionPool {
   public void evictAll() {
     List<Connection> toEvict;
     synchronized (this) {
-      toEvict = new ArrayList<>(connections);
+      toEvict = new ArrayList<Connection>(connections);
       connections.clear();
       notifyAll();
     }
@@ -267,7 +267,7 @@ public final class ConnectionPool {
     synchronized (this) {
       if (connections.isEmpty()) return false; // Halt cleanup.
 
-      evictableConnections = new ArrayList<>();
+      evictableConnections = new ArrayList<Connection>();
       int idleConnectionCount = 0;
       long now = System.nanoTime();
       long nanosUntilNextEviction = keepAliveDurationNs;
@@ -332,6 +332,6 @@ public final class ConnectionPool {
    */
   // VisibleForTesting
   synchronized List<Connection> getConnections() {
-    return new ArrayList<>(connections);
+    return new ArrayList<Connection>(connections);
   }
 }

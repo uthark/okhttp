@@ -24,18 +24,15 @@ import com.squareup.okhttp.internal.Internal;
 import com.squareup.okhttp.internal.InternalCache;
 import com.squareup.okhttp.internal.http.CacheRequest;
 import com.squareup.okhttp.internal.http.CacheStrategy;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.IOException;
-import java.net.CacheResponse;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -126,7 +123,7 @@ public final class URLEncodingTest {
   }
 
   private URI backdoorUrlToUri(URL url) throws Exception {
-    final AtomicReference<URI> uriReference = new AtomicReference<>();
+    final AtomicReference<URI> uriReference = new AtomicReference<URI>();
 
     OkHttpClient client = new OkHttpClient();
     Internal.instance.setCache(client, new InternalCache() {

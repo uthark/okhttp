@@ -29,6 +29,25 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 import com.squareup.okhttp.mockwebserver.SocketPolicy;
 import com.squareup.okhttp.testing.RecordingHostnameVerifier;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.GzipSink;
+import okio.Okio;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.junit.rules.Timeout;
+
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLProtocolException;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,24 +74,6 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLPeerUnverifiedException;
-import javax.net.ssl.SSLProtocolException;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.GzipSink;
-import okio.Okio;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.Timeout;
 
 import static com.squareup.okhttp.internal.Internal.logger;
 import static java.net.CookiePolicy.ACCEPT_ORIGINAL_SERVER;
@@ -84,7 +85,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public final class CallTest {
-  @Rule public final TestRule timeout = new Timeout(30_000);
+  @Rule public final TestRule timeout = new Timeout(30000);
   @Rule public final MockWebServer server = new MockWebServer();
   @Rule public final MockWebServer server2 = new MockWebServer();
   @Rule public final InMemoryFileSystem fileSystem = new InMemoryFileSystem();
@@ -1640,7 +1641,7 @@ public final class CallTest {
     server.enqueue(new MockResponse().setBody("A"));
 
     final CountDownLatch latch = new CountDownLatch(1);
-    final AtomicReference<String> bodyRef = new AtomicReference<>();
+    final AtomicReference<String> bodyRef = new AtomicReference<String>();
     final AtomicBoolean failureRef = new AtomicBoolean();
 
     Request request = new Request.Builder().url(server.url("/a")).tag("request A").build();
@@ -1737,7 +1738,7 @@ public final class CallTest {
         .header("User-Agent", "SyncApiTest")
         .build();
 
-    final BlockingQueue<Response> responseRef = new SynchronousQueue<>();
+    final BlockingQueue<Response> responseRef = new SynchronousQueue<Response>();
     client.newCall(request).enqueue(new Callback() {
       @Override public void onFailure(Request request, IOException e) {
         throw new AssertionError();
@@ -1881,7 +1882,7 @@ public final class CallTest {
 
   private static class RecordingSSLSocketFactory extends DelegatingSSLSocketFactory {
 
-    private List<SSLSocket> socketsCreated = new ArrayList<>();
+    private List<SSLSocket> socketsCreated = new ArrayList<SSLSocket>();
 
     public RecordingSSLSocketFactory(SSLSocketFactory delegate) {
       super(delegate);

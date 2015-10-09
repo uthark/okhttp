@@ -28,6 +28,26 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 import com.squareup.okhttp.mockwebserver.SocketPolicy;
 import com.squareup.okhttp.testing.RecordingHostnameVerifier;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.GzipSink;
+import okio.Okio;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,25 +80,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
-import javax.net.ServerSocketFactory;
-import javax.net.SocketFactory;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.GzipSink;
-import okio.Okio;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import static com.squareup.okhttp.internal.Util.UTF_8;
 import static com.squareup.okhttp.internal.http.OkHeaders.SELECTED_PROTOCOL;
@@ -136,8 +137,8 @@ public final class URLConnectionTest {
     assertEquals("f", connection.getRequestProperty("D"));
     assertEquals("f", connection.getRequestProperty("d"));
     Map<String, List<String>> requestHeaders = connection.getRequestProperties();
-    assertEquals(newSet("e", "f"), new LinkedHashSet<>(requestHeaders.get("D")));
-    assertEquals(newSet("e", "f"), new LinkedHashSet<>(requestHeaders.get("d")));
+    assertEquals(newSet("e", "f"), new LinkedHashSet<String>(requestHeaders.get("D")));
+    assertEquals(newSet("e", "f"), new LinkedHashSet<String>(requestHeaders.get("d")));
     try {
       requestHeaders.put("G", Arrays.asList("h"));
       fail("Modified an unmodifiable view.");
@@ -208,8 +209,8 @@ public final class URLConnectionTest {
     assertEquals("HTTP/1.0 200 Fantastic", connection.getHeaderField(null));
     Map<String, List<String>> responseHeaders = connection.getHeaderFields();
     assertEquals(Arrays.asList("HTTP/1.0 200 Fantastic"), responseHeaders.get(null));
-    assertEquals(newSet("c", "e"), new LinkedHashSet<>(responseHeaders.get("A")));
-    assertEquals(newSet("c", "e"), new LinkedHashSet<>(responseHeaders.get("a")));
+    assertEquals(newSet("c", "e"), new LinkedHashSet<String>(responseHeaders.get("A")));
+    assertEquals(newSet("c", "e"), new LinkedHashSet<String>(responseHeaders.get("a")));
     try {
       responseHeaders.put("N", Arrays.asList("o"));
       fail("Modified an unmodifiable view.");
@@ -3255,7 +3256,7 @@ public final class URLConnectionTest {
   }
 
   private Set<String> newSet(String... elements) {
-    return new LinkedHashSet<>(Arrays.asList(elements));
+    return new LinkedHashSet<String>(Arrays.asList(elements));
   }
 
   enum TransferKind {
@@ -3376,7 +3377,7 @@ public final class URLConnectionTest {
   }
 
   private static class FakeProxySelector extends ProxySelector {
-    List<Proxy> proxies = new ArrayList<>();
+    List<Proxy> proxies = new ArrayList<Proxy>();
 
     @Override public List<Proxy> select(URI uri) {
       // Don't handle 'socket' schemes, which the RI's Socket class may request (for SOCKS).

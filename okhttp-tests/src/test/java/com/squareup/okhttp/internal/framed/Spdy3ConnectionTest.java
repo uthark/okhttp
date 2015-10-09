@@ -16,6 +16,16 @@
 package com.squareup.okhttp.internal.framed;
 
 import com.squareup.okhttp.internal.Util;
+import okio.AsyncTimeout;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.ByteString;
+import okio.Okio;
+import okio.Sink;
+import okio.Source;
+import org.junit.After;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.Socket;
@@ -26,15 +36,6 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import okio.AsyncTimeout;
-import okio.Buffer;
-import okio.BufferedSink;
-import okio.ByteString;
-import okio.Okio;
-import okio.Sink;
-import okio.Source;
-import org.junit.After;
-import org.junit.Test;
 
 import static com.squareup.okhttp.TestUtil.headerEntries;
 import static com.squareup.okhttp.internal.framed.ErrorCode.CANCEL;
@@ -1119,7 +1120,7 @@ public final class Spdy3ConnectionTest {
     MockSpdyPeer.InFrame synStream = peer.takeFrame();
     assertEquals(TYPE_HEADERS, synStream.type);
     for (int i = 0; i < 3; i++) {
-      List<Integer> windowUpdateStreamIds = new ArrayList<>(2);
+      List<Integer> windowUpdateStreamIds = new ArrayList<Integer>(2);
       for (int j = 0; j < 2; j++) {
         MockSpdyPeer.InFrame windowUpdate = peer.takeFrame();
         assertEquals(TYPE_WINDOW_UPDATE, windowUpdate.type);
